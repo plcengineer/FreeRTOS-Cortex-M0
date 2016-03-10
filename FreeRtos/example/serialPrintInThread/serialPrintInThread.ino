@@ -5,7 +5,7 @@
 
 static void printerThread( void *pvParameters ){
   while(1){
-    vTaskDelay(1000/portTICK_PERIOD_MS);
+    vTaskDelay(1000000/portTICK_PERIOD_US);
     Serial.println("task");
   }
 }

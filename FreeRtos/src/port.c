@@ -197,8 +197,14 @@ void vPortStartFirstTask( void )
 /*
  * See header file for description.
  */
-extern void (*rtosSysTick_Handler)(void);
- 
+void (*rtosSysTick_Handler)(void);
+
+int sysTickHook(void) {
+	if (rtosSysTick_Handler)
+		rtosSysTick_Handler();
+	return 0; // return zero to keep running the arduino default handler!
+}
+
 BaseType_t xPortStartScheduler( void )
 {
 	rtosSysTick_Handler = &xPortSysTickHandler;
@@ -220,7 +226,7 @@ BaseType_t xPortStartScheduler( void )
 	exit error function to prevent compiler warnings about a static function
 	not being called in the case that the application writer overrides this
 	functionality by defining configTASK_RETURN_ADDRESS. */
-	prvTaskExitError();
+	//prvTaskExitError();
 
 	/* Should not get here! */
 	return 0;
@@ -251,8 +257,10 @@ void vPortEnterCritical( void )
 {
     portDISABLE_INTERRUPTS();
     uxCriticalNesting++;
-	__asm volatile( "dsb" );
-	__asm volatile( "isb" );
+	__asm volatile(
+		"dsb	\n"
+		"isb	\n"
+	);
 }
 /*-----------------------------------------------------------*/
 

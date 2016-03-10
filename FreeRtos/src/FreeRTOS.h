@@ -642,6 +642,8 @@ is included as it is used by the port layer. */
 
 #ifndef configUSE_MALLOC_FAILED_HOOK
 	#define configUSE_MALLOC_FAILED_HOOK 0
+#elif configUSE_MALLOC_FAILED_HOOK != 1
+	extern void (*vApplicationMallocFailedHook) ( void );
 #endif
 
 #ifndef portPRIVILEGE_BIT
