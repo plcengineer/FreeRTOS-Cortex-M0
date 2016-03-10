@@ -2,4 +2,9 @@
 A [FreeRTOS](http://www.freertos.org/) port for the [Arduino Zero](https://www.arduino.cc/en/Main/ArduinoBoardZero).
 
 ## USAGE ##
-Place the FreeRtos folder to your arduino libraries directory. Don't use delay nor delayMicroseconds within your projects that use the scheduler. Only use vTaskDelay() in thread functions. 
+Place the FreeRTOS folder to your arduino libraries directory.
+
+## LICENSE ##
+FreeRTOS is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License (version 2) as published by the
+Free Software Foundation >>>> AND MODIFIED BY <<<< the FreeRTOS exception.
