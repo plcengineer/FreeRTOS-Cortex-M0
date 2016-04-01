@@ -1,6 +1,7 @@
 #include <FreeRTOS.h>
 #include <FreeRTOSConfig.h>
 #include <task.h>
+#include <helper.h>
 
 static void printerThread( void *pvParameters ) {
 	int cycleCount = 0;
@@ -31,7 +32,8 @@ void setup() {
 	xTaskCreate(rtosLoopThread, "loop",128, NULL, tskIDLE_PRIORITY, NULL);
 	xTaskCreate(printerThread, "test", 128, NULL, tskIDLE_PRIORITY, NULL);
 
-	vTaskStartScheduler();
+	//vTaskStartScheduler();
+	rtos_run(); // call instead of vTaskStartScheduler, because some methods need to be remapped
 }
 
 void loop() {
