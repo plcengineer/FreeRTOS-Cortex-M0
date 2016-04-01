@@ -103,6 +103,13 @@
 #endif
 /*-----------------------------------------------------------*/
 
+void vAppStackOverflowHook(TaskHandle_t task, char* name) {
+#if configCHECK_FOR_STACK_OVERFLOW > 0
+	vAppStackOverflowHook(task, name);
+#endif
+}
+
+
 #if( ( configCHECK_FOR_STACK_OVERFLOW > 0 ) && ( portSTACK_GROWTH < 0 ) )
 
 	/* Only the current stack state is to be checked. */
@@ -111,7 +118,7 @@
 		/* Is the currently saved stack pointer within the stack limit? */								\
 		if( pxCurrentTCB->pxTopOfStack <= pxCurrentTCB->pxStack )										\
 		{																								\
-			vApplicationStackOverflowHook( ( TaskHandle_t ) pxCurrentTCB, pxCurrentTCB->pcTaskName );	\
+			vAppStackOverflowHook( ( TaskHandle_t ) pxCurrentTCB, pxCurrentTCB->pcTaskName );	\
 		}																								\
 	}
 

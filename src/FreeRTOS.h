@@ -108,6 +108,12 @@ is included as it is used by the port layer. */
 /* Definitions specific to the port being used. */
 #include "portable.h"
 
+// define sketch hooks
+void rtosFatalError(void);
+#if( configUSE_MALLOC_FAILED_HOOK == 1 )
+void vApplicationMallocFailedHook(void);
+#endif
+
 /*
  * Check all the required application specific macros have been defined.
  * These macros are application specific and (as downloaded) are defined

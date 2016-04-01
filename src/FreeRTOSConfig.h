@@ -120,8 +120,5 @@ extern void rtosFatalError(void);
 standard names - or at least those used in the unmodified vector table. */
 #define vPortSVCHandler                         SVC_Handler
 #define xPortPendSVHandler                      PendSV_Handler
-//#define xPortSysTickHandler                     SysTick_Handler
-
-
 
 #endif /* FREERTOS_CONFIG_H */

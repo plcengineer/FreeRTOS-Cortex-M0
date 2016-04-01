@@ -245,6 +245,9 @@ is used in assert() statements. */
 #define taskSCHEDULER_NOT_STARTED	( ( BaseType_t ) 1 )
 #define taskSCHEDULER_RUNNING		( ( BaseType_t ) 2 )
 
+#if configCHECK_FOR_STACK_OVERFLOW > 0
+	void vApplicationStackOverflowHook ( TaskHandle_t , char * );
+#endif
 
 /*-----------------------------------------------------------
  * TASK CREATION API
@@ -1554,6 +1557,7 @@ void vTaskStepTick( const TickType_t xTicksToJump ) PRIVILEGED_FUNCTION;
  * entered to ensure it is ok to proceed into the sleep mode.
  */
 eSleepModeStatus eTaskConfirmSleepModeStatus( void ) PRIVILEGED_FUNCTION;
+
 
 #ifdef __cplusplus
 }

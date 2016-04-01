@@ -1,24 +1,57 @@
 #include <FreeRTOS.h>
+#include <FreeRTOSConfig.h>
 #include <task.h>
-#include <queue.h>
-#include "FreeRTOSConfig.h"
 
-static void printerThread( void *pvParameters ){
-  while(1){
-    vTaskDelay(1000000/portTICK_PERIOD_US);
-    Serial.println("task");
-  }
+static void printerThread( void *pvParameters ) {
+	int cycleCount = 0;
+	char s[20];
+
+	SerialUSB.println("printerThread started");
+
+	while (1) {
+		// delay and delayMicroseconds are task compatible
+		delayMicroseconds(1500);	// idle for 1.5 ms
+		delay(1500);				// idle for 1.5 s
+
+		itoa(cycleCount++, s, 10);
+		SerialUSB.print("printerThread count: ");
+		SerialUSB.println(s);
+	}
+}
+
+static void rtosLoopThread( void *pvParameters ) {
+	while (1)
+		loop();
 }
 
 void setup() {
-  Serial.begin(115200);
-  xTaskCreate( printerThread, "test", 128, NULL, tskIDLE_PRIORITY, NULL );
-  // put your setup code here, to run once:
-  vTaskStartScheduler();
+	delay(1000);
+	SerialUSB.begin(115200);
+
+	xTaskCreate(rtosLoopThread, "loop",128, NULL, tskIDLE_PRIORITY, NULL);
+	xTaskCreate(printerThread, "test", 128, NULL, tskIDLE_PRIORITY, NULL);
+
+	vTaskStartScheduler();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  Serial.println("loop");
-  delay(1000);
+	// loop is called by FreeRtos
+	SerialUSB.println("threaded loop");
+	delay(1000);
 }
+
+void rtosFatalError(void) {
+	// called on fatal error (interrupts disabled already)
+	while (1)
+		; // block execution
+}
+
+void vApplicationMallocFailedHook(void) {
+	// called on empty heap space
+}
+
+void vApplicationStackOverflowHook(TaskHandle_t pxCurrentTCB,
+		const char* pcTaskName) {
+	// called on empty stack
+}
+

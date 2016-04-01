@@ -392,16 +392,14 @@ to its original value when it is released. */
 	#define taskEVENT_LIST_ITEM_VALUE_IN_USE	0x80000000UL
 #endif
 
+/* File private functions. --------------------------------*/
+
+
 /* Callback function prototypes. --------------------------*/
-#if configCHECK_FOR_STACK_OVERFLOW > 0
-	extern void vApplicationStackOverflowHook( TaskHandle_t xTask, char *pcTaskName );
-#endif
 
 #if configUSE_TICK_HOOK > 0
-	extern void vApplicationTickHook( void );
+	void vApplicationTickHook( void );
 #endif
-
-/* File private functions. --------------------------------*/
 
 /*
  * Utility to ready a TCB for a given task.  Mainly just copies the parameters
@@ -2155,9 +2153,7 @@ void vTaskSwitchContext( void )
 
 		taskFIRST_CHECK_FOR_STACK_OVERFLOW();
 		taskSECOND_CHECK_FOR_STACK_OVERFLOW();
-
 		taskSELECT_HIGHEST_PRIORITY_TASK();
-
 		traceTASK_SWITCHED_IN();
 
 		#if ( configUSE_NEWLIB_REENTRANT == 1 )
